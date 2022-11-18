@@ -5,9 +5,12 @@ use crate::{
     },
     operation::{add_parameters, set_body},
 };
-use axum::extract::{
-    BodyStream, ConnectInfo, Extension, Form, Host, Json, MatchedPath, OriginalUri, Path, Query,
-    RawBody, RawQuery, State,
+use axum::{
+    extract::{
+        BodyStream, ConnectInfo, Extension, Form, Host, Json, MatchedPath, OriginalUri, Path,
+        Query, RawBody, RawQuery, State,
+    },
+    middleware::FromFnLayer,
 };
 use indexmap::IndexMap;
 use schemars::{
@@ -15,6 +18,7 @@ use schemars::{
     JsonSchema,
 };
 use serde_json::json;
+use tower_layer::Layer;
 
 use crate::{
     error::Error,
@@ -30,6 +34,7 @@ impl OperationInput for OriginalUri {}
 impl OperationInput for RawBody {}
 impl OperationInput for RawQuery {}
 impl OperationInput for Host {}
+impl<F, S, T> OperationInput for FromFnLayer<F, S, T> {}
 
 impl<T> OperationInput for Json<T>
 where
