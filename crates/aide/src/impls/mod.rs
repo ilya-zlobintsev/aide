@@ -206,6 +206,53 @@ impl OperationOutput for String {
     }
 }
 
+impl OperationInput for serde_json::Value {
+    fn operation_input(ctx: &mut crate::gen::GenContext, operation: &mut Operation) {
+        set_body(
+            ctx,
+            operation,
+            RequestBody {
+                description: None,
+                content: IndexMap::from_iter([(
+                    "application/json; charset=utf-8".into(),
+                    MediaType::default(),
+                )]),
+                required: true,
+                extensions: IndexMap::default(),
+            },
+        );
+    }
+}
+
+impl OperationOutput for serde_json::Value {
+    type Inner = Self;
+
+    fn operation_response(
+        _ctx: &mut crate::gen::GenContext,
+        _operation: &mut Operation,
+    ) -> Option<crate::openapi::Response> {
+        Some(Response {
+            description: "JSON".into(),
+            content: IndexMap::from_iter([(
+                "application/json; charset=utf-8".into(),
+                MediaType::default(),
+            )]),
+            ..Default::default()
+        })
+    }
+
+    fn inferred_responses(
+        ctx: &mut crate::gen::GenContext,
+        operation: &mut Operation,
+    ) -> Vec<(Option<u16>, Response)> {
+        if let Some(res) = Self::operation_response(ctx, operation) {
+            Vec::from([(Some(200), res)])
+        } else {
+            Vec::new()
+        }
+    }
+}
+
 impl<'a> OperationOutput for &'a str {
     type Inner = Self;
 
