@@ -31,7 +31,7 @@ impl Rapidoc {
                 </script>
               </head>
               <body>
-                <rapi-doc spec-url = "{spec_url}"> </rapi-doc>
+                <rapi-doc spec-url = "{spec_url}" render-style="view"> </rapi-doc>
               </body>
             </html>
             <!DOCTYPE html>
