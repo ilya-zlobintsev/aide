@@ -133,6 +133,9 @@ pub mod axum;
 #[cfg(feature = "redoc")]
 pub mod redoc;
 
+#[cfg(feature = "rapidoc")]
+pub mod rapidoc;
+
 pub use error::Error;
 pub use operation::{OperationInput, OperationOutput};
 
